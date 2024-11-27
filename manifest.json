@@ -1,7 +1,7 @@
 {
-    "short_name": "Radiohub",
-    "name": "Radiohub",
-    "description": "A free, easy-to-use, simple and minimal web template built with Shoelace, designed for creating a radio directory.",
+    "short_name": "Akashvani Malayalam",
+    "name": "Akashvani Malayalam",
+    "description": "Unofficial directory of Akashvani Malayalam radio channels with live stream links.",
     "icons": [
       {
         "src": "assets/favicon.svg",
@@ -9,7 +9,7 @@
         "sizes": "any"
       }
     ],
-    "start_url": "https://digitalmalayali.github.io/Radiohub/",
+    "start_url": "https://zcraber.github.io/Akashvani-Malayalam/",
     "display": "standalone",
     "theme_color": "#242428",
     "background_color": "#242428"
