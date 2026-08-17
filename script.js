@@ -1,1 +1,66 @@
-const buttons=document.getElementsByClassName("play-radio"),audios=document.getElementsByClassName("audio"),volumeControls=document.getElementsByClassName("volume-control");function pauseAllExcept(t){for(let e of audios)if(e!==t){e.pause();const t=Array.from(audios).indexOf(e);buttons[t].disabled||(buttons[t].innerHTML='<sl-icon id="icon" slot="prefix" name="play-circle-fill"></sl-icon> Play',buttons[t].setAttribute("variant","primary"),volumeControls[t].style.display="none")}}for(let t=0;t<buttons.length;t++){const e=buttons[t],l=audios[t],n=volumeControls[t],i=l.getAttribute("data-src");let o=null;e.addEventListener("click",(()=>{l.paused?(e.innerHTML='<sl-spinner style="--indicator-color: var(--sl-color-neutral-0); --track-color: var(--sl-color-neutral-300);"></sl-spinner>',pauseAllExcept(l),i&&i.endsWith(".m3u8")&&(Hls.isSupported()?o?l.play().then((()=>{e.innerHTML='<sl-icon id="icon" slot="prefix" name="stop-circle-fill"></sl-icon> Stop',e.setAttribute("variant","danger"),n.style.display="inline-block",l.volume=n.value/100})).catch((()=>{disableButton(e)})):(o=new Hls,o.loadSource(i),o.attachMedia(l),o.on(Hls.Events.MANIFEST_PARSED,(function(){l.play().then((()=>{e.innerHTML='<sl-icon id="icon" slot="prefix" name="stop-circle-fill"></sl-icon> Stop',e.setAttribute("variant","danger"),n.style.display="inline-block",l.volume=n.value/100})).catch((()=>{disableButton(e)}))}))):l.canPlayType("application/vnd.apple.mpegurl")&&(l.src=i,l.play().then((()=>{e.innerHTML='<sl-icon id="icon" slot="prefix" name="stop-circle-fill"></sl-icon> Stop',e.setAttribute("variant","danger"),n.style.display="inline-block",l.volume=n.value/100})).catch((()=>{disableButton(e)}))))):(l.pause(),e.innerHTML='<sl-icon id="icon" slot="prefix" name="play-circle-fill"></sl-icon> Play',e.setAttribute("variant","primary"),n.style.display="none")})),n.addEventListener("input",(function(){l.volume=n.value/100})),l.onerror=function(){disableButton(e)}}function disableButton(t){t.innerHTML='<sl-icon slot="prefix" name="slash-circle"></sl-icon> Inactive',t.setAttribute("variant","default"),t.disabled=!0}
+const buttons = document.getElementsByClassName("play-radio"),
+    audios = document.getElementsByClassName("audio"),
+    volumeControls = document.getElementsByClassName("volume-control");
+
+function pauseAllExcept(t) {
+    for (let e of audios)
+        if (e !== t) {
+            e.pause();
+            const t = Array.from(audios).indexOf(e);
+            buttons[t].disabled || (buttons[t].innerHTML = '<sl-icon id="icon" slot="prefix" name="play-circle-fill"></sl-icon> Play', buttons[t].setAttribute("variant", "primary"), volumeControls[t].style.display = "none")
+        }
+}
+for (let t = 0; t < buttons.length; t++) {
+    const e = buttons[t],
+        l = audios[t],
+        n = volumeControls[t],
+        i = l.getAttribute("data-src");
+    let o = null;
+    e.addEventListener("click", (() => {
+        l.paused ? (e.innerHTML = '<sl-spinner style="--indicator-color: var(--sl-color-neutral-0); --track-color: var(--sl-color-neutral-300);"></sl-spinner>', pauseAllExcept(l), i && i.endsWith(".m3u8") && (Hls.isSupported() ? o ? l.play().then((() => {
+            e.innerHTML = '<sl-icon id="icon" slot="prefix" name="stop-circle-fill"></sl-icon> Stop', e.setAttribute("variant", "danger"), n.style.display = "inline-block", l.volume = n.value / 100
+        })).catch((() => {
+            disableButton(e)
+        })) : (o = new Hls, o.loadSource(i), o.attachMedia(l), o.on(Hls.Events.MANIFEST_PARSED, (function() {
+            l.play().then((() => {
+                e.innerHTML = '<sl-icon id="icon" slot="prefix" name="stop-circle-fill"></sl-icon> Stop', e.setAttribute("variant", "danger"), n.style.display = "inline-block", l.volume = n.value / 100
+            })).catch((() => {
+                disableButton(e)
+            }))
+        }))) : l.canPlayType("application/vnd.apple.mpegurl") && (l.src = i, l.play().then((() => {
+            e.innerHTML = '<sl-icon id="icon" slot="prefix" name="stop-circle-fill"></sl-icon> Stop', e.setAttribute("variant", "danger"), n.style.display = "inline-block", l.volume = n.value / 100
+        })).catch((() => {
+            disableButton(e)
+        }))))) : (l.pause(), e.innerHTML = '<sl-icon id="icon" slot="prefix" name="play-circle-fill"></sl-icon> Play', e.setAttribute("variant", "primary"), n.style.display = "none")
+    })), n.addEventListener("input", (function() {
+        l.volume = n.value / 100
+    })), l.onerror = function() {
+        disableButton(e)
+    }
+}
+
+function disableButton(t) {
+    t.innerHTML = '<sl-icon slot="prefix" name="slash-circle"></sl-icon> Inactive', t.setAttribute("variant", "default"), t.disabled = !0
+}
+
+if ('mediaSession' in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+        title: 'Akashvani Malayalam',
+        artist: 'Digital Malayali',
+        album: 'Live Radio'
+    });
+
+    navigator.mediaSession.playbackState = 'playing';
+
+    navigator.mediaSession.setActionHandler('play', () => {
+        audio.play();
+    });
+
+    navigator.mediaSession.setActionHandler('pause', () => {
+        audio.pause();
+    });
+}
+
+if ('mediaSession' in navigator) {
+    navigator.mediaSession.playbackState = 'paused';
+}
